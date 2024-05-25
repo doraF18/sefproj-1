@@ -28,7 +28,7 @@ const Homepage = () => {
                                     Login
                                 </LightPurpleButton>
                             </StyledLink>
-                            {/* Removed Login as Guest button */}
+                           
                             <StyledText>
                                 Don't have an account?{' '}
                                 <Link to="/Adminregister" style={{color:"#550080"}}>

@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, Grid, Box, Typography, Paper, Checkbox, FormControlLabel, TextField, CssBaseline, IconButton, InputAdornment, CircularProgress, Backdrop } from '@mui/material';
+import { Button, Grid, Box, Typography, Paper, TextField, CssBaseline, IconButton, InputAdornment, CircularProgress, Backdrop } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import bgpic from "../assets/designlogin.jpg"
+import bgpic from "../assets/designlogin.jpg";
 import { LightPurpleButton } from '../components/buttonStyles';
 import styled from 'styled-components';
 import { loginUser } from '../redux/userRelated/userHandle';
@@ -14,14 +14,13 @@ const defaultTheme = createTheme();
 
 const LoginPage = ({ role }) => {
 
-    const dispatch = useDispatch()
-    const navigate = useNavigate()
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
-    const { status, currentUser, response, error, currentRole } = useSelector(state => state.user);;
+    const { status, currentUser, response, error, currentRole } = useSelector(state => state.user);
 
-    const [toggle, setToggle] = useState(false)
-    const [guestLoader, setGuestLoader] = useState(false)
-    const [loader, setLoader] = useState(false)
+    const [toggle, setToggle] = useState(false);
+    const [loader, setLoader] = useState(false);
     const [showPopup, setShowPopup] = useState(false);
     const [message, setMessage] = useState("");
 
@@ -44,12 +43,10 @@ const LoginPage = ({ role }) => {
                 if (!password) setPasswordError(true);
                 return;
             }
-            const fields = { rollNum, studentName, password }
-            setLoader(true)
-            dispatch(loginUser(fields, role))
-        }
-
-        else {
+            const fields = { rollNum, studentName, password };
+            setLoader(true);
+            dispatch(loginUser(fields, role));
+        } else {
             const email = event.target.email.value;
             const password = event.target.password.value;
 
@@ -59,9 +56,9 @@ const LoginPage = ({ role }) => {
                 return;
             }
 
-            const fields = { email, password }
-            setLoader(true)
-            dispatch(loginUser(fields, role))
+            const fields = { email, password };
+            setLoader(true);
+            dispatch(loginUser(fields, role));
         }
     };
 
@@ -73,51 +70,23 @@ const LoginPage = ({ role }) => {
         if (name === 'studentName') setStudentNameError(false);
     };
 
-    const guestModeHandler = () => {
-        const password = "zxc"
-
-        if (role === "Admin") {
-            const email = "yogendra@12"
-            const fields = { email, password }
-            setGuestLoader(true)
-            dispatch(loginUser(fields, role))
-        }
-        else if (role === "Student") {
-            const rollNum = "1"
-            const studentName = "Dipesh Awasthi"
-            const fields = { rollNum, studentName, password }
-            setGuestLoader(true)
-            dispatch(loginUser(fields, role))
-        }
-        else if (role === "Teacher") {
-            const email = "tony@12"
-            const fields = { email, password }
-            setGuestLoader(true)
-            dispatch(loginUser(fields, role))
-        }
-    }
-
     useEffect(() => {
         if (status === 'success' || currentUser !== null) {
             if (currentRole === 'Admin') {
                 navigate('/Admin/dashboard');
-            }
-            else if (currentRole === 'Student') {
+            } else if (currentRole === 'Student') {
                 navigate('/Student/dashboard');
             } else if (currentRole === 'Teacher') {
                 navigate('/Teacher/dashboard');
             }
-        }
-        else if (status === 'failed') {
-            setMessage(response)
-            setShowPopup(true)
-            setLoader(false)
-        }
-        else if (status === 'error') {
-            setMessage("Network Error")
-            setShowPopup(true)
-            setLoader(false)
-            setGuestLoader(false)
+        } else if (status === 'failed') {
+            setMessage(response);
+            setShowPopup(true);
+            setLoader(false);
+        } else if (status === 'error') {
+            setMessage("Network Error");
+            setShowPopup(true);
+            setLoader(false);
         }
     }, [status, currentRole, navigate, error, response, currentUser]);
 
@@ -213,15 +182,6 @@ const LoginPage = ({ role }) => {
                                     ),
                                 }}
                             />
-                            <Grid container sx={{ display: "flex", justifyContent: "space-between" }}>
-                                <FormControlLabel
-                                    control={<Checkbox value="remember" color="primary" />}
-                                    label="Remember me"
-                                />
-                                <StyledLink href="#">
-                                    Forgot password?
-                                </StyledLink>
-                            </Grid>
                             <LightPurpleButton
                                 type="submit"
                                 fullWidth
@@ -232,14 +192,6 @@ const LoginPage = ({ role }) => {
                                     <CircularProgress size={24} color="inherit" />
                                     : "Login"}
                             </LightPurpleButton>
-                            <Button
-                                fullWidth
-                                onClick={guestModeHandler}
-                                variant="outlined"
-                                sx={{ mt: 2, mb: 3, color: "#7f56da", borderColor: "#7f56da" }}
-                            >
-                                Login as Guest
-                            </Button>
                             {role === "Admin" &&
                                 <Grid container>
                                     <Grid>
@@ -272,7 +224,7 @@ const LoginPage = ({ role }) => {
             </Grid>
             <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                open={guestLoader}
+                open={loader}
             >
                 <CircularProgress color="primary" />
                 Please Wait
@@ -282,7 +234,7 @@ const LoginPage = ({ role }) => {
     );
 }
 
-export default LoginPage
+export default LoginPage;
 
 const StyledLink = styled(Link)`
   margin-top: 9px;
